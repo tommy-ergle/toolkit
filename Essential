@@ -1,0 +1,91 @@
+import React, { useState } from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { motion } from "framer-motion";
+
+// --------- Static data (easy to replace / extend) ------------
+const tools = [
+  {
+    name: "Todoist",
+    tagline: "Cross-platform task manager with natural-language capture & AI prioritization.",
+    link: "https://todoist.com/",
+  },
+  {
+    name: "Google Calendar",
+    tagline: "Universal calendar backbone for shared schedules & aggressive reminders.",
+    link: "https://calendar.google.com/",
+  },
+  {
+    name: "Notion",
+    tagline: "All-in-one wiki & database that scales from class notes to client dashboards.",
+    link: "https://www.notion.so/",
+  },
+  {
+    name: "Trello",
+    tagline: "Drag-and-drop kanban boards for projects, habits, and side-hustle pipelines.",
+    link: "https://trello.com/",
+  },
+  {
+    name: "TickTick",
+    tagline: "Hybrid to-do + calendar with built-in pomodoro timer & habit tracker.",
+    link: "https://ticktick.com/",
+  },
+];
+
+const EssentialToolKitDirectory = () => {
+  const [query, setQuery] = useState("");
+
+  const filteredTools = tools.filter((t) =>
+    (t.name + t.tagline).toLowerCase().includes(query.toLowerCase())
+  );
+
+  return (
+    <div className="min-h-screen w-full bg-gray-100 p-6">
+      <div className="mx-auto max-w-4xl">
+        <header className="mb-8 text-center">
+          <h1 className="text-4xl font-bold tracking-tight">Essential Tool Kit Directory</h1>
+          <p className="mt-2 text-lg text-gray-600">
+            Curated productivity apps that 20-somethings actually use.
+          </p>
+          <div className="mt-6 flex justify-center">
+            <Input
+              placeholder="Search tools…"
+              className="w-full max-w-md"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+            />
+          </div>
+        </header>
+
+        <motion.div
+          layout
+          className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          {filteredTools.map((tool) => (
+            <Card key={tool.name} className="hover:shadow-xl transition-shadow">
+              <CardContent className="p-6">
+                <h2 className="text-xl font-semibold mb-2">{tool.name}</h2>
+                <p className="text-gray-700 mb-4 leading-snug">{tool.tagline}</p>
+                <Button asChild variant="outline" className="w-full">
+                  <a href={tool.link} target="_blank" rel="noopener noreferrer">
+                    Visit Site
+                  </a>
+                </Button>
+              </CardContent>
+            </Card>
+          ))}
+        </motion.div>
+
+        {filteredTools.length === 0 && (
+          <p className="mt-10 text-center text-gray-500">No matching tools found.</p>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default EssentialToolKitDirectory;
